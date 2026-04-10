@@ -16,7 +16,7 @@ function setupClaudeExporter() {
   };
 
   const DELAYS = {
-    copy: 100
+    copy: 200
   };
 
   function downloadMarkdown(content, filename) {
@@ -200,7 +200,7 @@ function setupClaudeExporter() {
   }
 
   async function waitForClipboardOperations(targetArray, expectedCount) {
-    const maxWaitTime = 2000;
+    const maxWaitTime = 5000;
     const checkInterval = 100;
     let elapsed = 0;
 
