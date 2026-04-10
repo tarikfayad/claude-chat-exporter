@@ -11,7 +11,8 @@ function setupClaudeExporter() {
     copyButton: 'button[data-testid="action-bar-copy"]',
     conversationTitle: '[data-testid="chat-title-button"] .truncate, button[data-testid="chat-title-button"] div.truncate',
     messageActionsGroup: '[role="group"][aria-label="Message actions"]',
-    feedbackButton: 'button[aria-label="Give positive feedback"]'
+    feedbackButton: 'button[aria-label="Give positive feedback"]',
+    retryButton: 'button[data-testid="action-bar-retry"]'  // added a retry button for the latest UI
   };
 
   const DELAYS = {
@@ -152,8 +153,8 @@ function setupClaudeExporter() {
     const actionGroups = document.querySelectorAll(SELECTORS.messageActionsGroup);
     const buttons = [];
     actionGroups.forEach(group => {
-      const hasFeedback = !!group.querySelector(SELECTORS.feedbackButton);
-      if (hasFeedback === claudeOnly) {
+      const hasRetry = !!group.querySelector(SELECTORS.retryButton);
+      if (hasRetry === claudeOnly) {
         const copyBtn = group.querySelector(SELECTORS.copyButton);
         if (copyBtn) buttons.push(copyBtn);
       }
