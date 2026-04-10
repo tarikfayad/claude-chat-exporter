@@ -166,7 +166,8 @@ function setupClaudeExporter() {
     for (let i = 0; i < buttons.length; i++) {
       try {
         if (buttons[i].offsetParent !== null) {
-          buttons[i].scrollIntoView({ behavior: 'instant', block: 'nearest' });
+          buttons[i].scrollIntoView({ behavior: 'instant', block: 'center' });
+          await delay(50);  // let virtualized content settle
           buttons[i].click();
           console.log(`🖱️ Clicked copy button ${i + 1}/${buttons.length}`);
         }
