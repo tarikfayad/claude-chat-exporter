@@ -12,11 +12,12 @@ function setupClaudeExporter() {
     conversationTitle: '[data-testid="chat-title-button"] .truncate, button[data-testid="chat-title-button"] div.truncate',
     messageActionsGroup: '[role="group"][aria-label="Message actions"]',
     feedbackButton: 'button[aria-label="Give positive feedback"]',
-    retryButton: 'button[data-testid="action-bar-retry"]'  // added a retry button for the latest UI
+    retryButton: 'button[data-testid="action-bar-retry"]',  // added a retry button for the latest UI
+    editButton: 'button[aria-label="Edit"]' // Using edit button to get human messages.
   };
 
   const DELAYS = {
-    copy: 200
+    copy: 100
   };
 
   function downloadMarkdown(content, filename) {
@@ -153,8 +154,9 @@ function setupClaudeExporter() {
     const actionGroups = document.querySelectorAll(SELECTORS.messageActionsGroup);
     const buttons = [];
     actionGroups.forEach(group => {
-      const hasRetry = !!group.querySelector(SELECTORS.retryButton);
-      if (hasRetry === claudeOnly) {
+      const hasEdit = !!group.querySelector(SELECTORS.editButton);
+      const isHuman = hasEdit;
+      if (isHuman !== claudeOnly) {  // claudeOnly=true wants !isHuman
         const copyBtn = group.querySelector(SELECTORS.copyButton);
         if (copyBtn) buttons.push(copyBtn);
       }
@@ -166,8 +168,7 @@ function setupClaudeExporter() {
     for (let i = 0; i < buttons.length; i++) {
       try {
         if (buttons[i].offsetParent !== null) {
-          buttons[i].scrollIntoView({ behavior: 'instant', block: 'center' });
-          await delay(50);  // let virtualized content settle
+          buttons[i].scrollIntoView({ behavior: 'instant', block: 'nearest' });
           buttons[i].click();
           console.log(`🖱️ Clicked copy button ${i + 1}/${buttons.length}`);
         }
@@ -201,7 +202,7 @@ function setupClaudeExporter() {
   }
 
   async function waitForClipboardOperations(targetArray, expectedCount) {
-    const maxWaitTime = 5000;
+    const maxWaitTime = 2000;
     const checkInterval = 100;
     let elapsed = 0;
 
